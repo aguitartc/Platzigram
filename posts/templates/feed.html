@@ -1,0 +1,29 @@
+<!-- vista 3
+{{posts}} -->
+
+<!-- vista 4-->
+<!-- meeeerda
+{% for post in posts %}
+    <p>{{post.name}}</p>
+    
+{% endfor %} -->
+<!-- vista 4 important bootstrap formatant bonic-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Platzigram</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+    <br><br>
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-lg-4 offset-lg-4">
+                <h5 class="mt-0">{{post.name}}</h5>
+                {{post.timestamp}}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
