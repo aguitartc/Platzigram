@@ -1,49 +1,70 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block head_content %}
-    <title>
-        @{{ request.user.username }}
-         Update profile
-    </title>
-{% endblock head_content %}
+<title>@{{ request.user.username }} | Update profile</title>
+{% endblock %}
 
 {% block container %}
-    <h1>@{{ request.user.username }}</h1>
 
-    
+<div class="container">
 
-    {% if error %}
+    <div class="row justify-content-md-center">
+        <div class="col-6 p-4" id="profile-box">
 
-        <p class="alert alert-danger">{{ error }}</p>
-    {% endif %}    
+            <form action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
 
-    <form action="{% url 'signup' %}" method="POST">
-        {% csrf_token %}
-        <div class="form-control">
-            <input class="form-control" type="text" placeholder="Username" name="username" required="true" />
+                {% if form.errors %}
+                    <p>{{ form.errors }}</p>
+                {% endif %}
+
+                <div class="media">
+                    {% if profile.picture %}
+                        <img src="{{ profile.picture.url }}" class="rounded-circle" height="50" />
+                    {% else%}
+                        <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" height="50" />
+                    {% endif %}
+
+                    <div class="media-body">
+                        <h5 class="ml-4">@{{ user.username }} | {{ user.get_full_name }}</h5>
+                        <p class="ml-4"><input type="file" name="picture" required="true"></p>
+                    </div>
+                </div>
+
+                <hr><br>
+
+                <div class="form-group">
+                    <label>Website</label>
+                    <input
+                        class="form-control"
+                        type="url"
+                        name="website"
+                        placeholder="Website"
+                        value="{{ profile.website }}"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label>Biography</label>
+                    <textarea class="form-control" name="biography">{{ profile.biography }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone number</label>
+                    <input
+                        class="form-control"
+                        type="text"
+                        name="phone_number"
+                        placeholder="Phone number"
+                        value="{{ profile.phone_number }}"
+                    />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-5">Update info</button>
+            </form>
         </div>
+    </div>
+</div>
 
-        <div class="form-control">
-            <input class="form-control" type="password" placeholder="Password" name="passwd" required="true" />
-        </div>
-
-        <div class="form-control">
-            <input class="form-control" type="password" placeholder="Password confirmation" name="passwd_confirmation" required="true" />
-        </div>
-
-        <div class="form-control">
-            <input class="form-control" type="text" placeholder="First name" name="first_name" required="true" />
-        </div>
-
-        <div class="form-control">
-            <input class="form-control" type="text" placeholder="Last name" name="last_name" required="true" />
-        </div>
-
-        <div class="form-control">
-            <input class="form-control" type="email" placeholder="Email" name="email" required="true" />
-        </div>
-
-        <button class="btn btn-primary btn-block mt-5" type="submit">Register</button>
-    </form>
-    
-{% endblock container %}
+{% endblock %}
