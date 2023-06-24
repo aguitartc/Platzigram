@@ -13,7 +13,7 @@ from django.db.utils import IntegrityError
 
 
 #Forms
-from users.forms import ProfileForm
+from users.forms import ProfileForm, SignupForm
 
 def update_profile(request): 
     """Update a user's profile view."""
@@ -71,25 +71,19 @@ def logout_view(request):
 def signup(request):
     """signup"""
     if request.method == 'POST':
-        username = request.POST['username']
-        passwd = request.POST['passwd']
-        passwd_confirmation = request.POST['passwd_confirmation']
-
-        if passwd != passwd_confirmation:
-            return render(request, 'users/signup.html', {'error': 'Password confirmation does not match'})
-        
-        try:
-            newUser = User.objects.create_user(username=username, password= passwd)
-        except:
-            return render(request, 'users/signup.html', {'error': 'Username specified already exists'})
-        
-        newUser.first_name = request.POST['first_name']
-        newUser.last_name = request.POST['last_name']
-        newUser.save()
-
-        profile = Profile(user=newUser)
-        profile.save()
-
-        return redirect('login')
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = SignupForm()
+    
+    return render(
+        request=request,
+        template_name='users/signup.html',
+        context={
+            'form': form
+            }
+    )
     
     return render(request,'users/signup.html')
