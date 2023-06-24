@@ -15,6 +15,7 @@ from django.db.utils import IntegrityError
 #Forms
 from users.forms import ProfileForm, SignupForm
 
+@login_required
 def update_profile(request): 
     """Update a user's profile view."""
     profile = request.user.profile
@@ -30,7 +31,7 @@ def update_profile(request):
             profile.picture = data['picture']
             profile.save()
 
-            return redirect('update_profile')
+            return redirect('users:update_profile')
     else:
         form = ProfileForm()
 
@@ -53,10 +54,10 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request,user)
-            return redirect('feed')
+            return redirect('posts:feed')
         else:
             print('NO TROBA USER*' * 10)
-            # return redirect('login')
+            # return redirect('users:login')
             return render(request, 'users/login.html', 
                           {'error':'Invalid username and password'})
 
@@ -74,7 +75,7 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('users:login')
     else:
         form = SignupForm()
     
