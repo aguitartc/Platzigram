@@ -15,9 +15,7 @@
             <form action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                {% if form.errors %}
-                    <p>{{ form.errors }}</p>
-                {% endif %}
+                
 
                 <div class="media">
                     {% if profile.picture %}
@@ -32,16 +30,18 @@
                     </div>
                 </div>
 
+                {% for error in form.picture.errors %}
+                error {% endfor %}
                 <hr><br>
-
+                {# Website field #}
                 <div class="form-group">
                     <label>Website</label>
                     <input
-                        class="form-control"
+                        class="form-control {% if form.website.errors %}is-invalid{% endif %}"
                         type="url"
                         name="website"
                         placeholder="Website"
-                        value="{{ profile.website }}"
+                        value="{% if  form.errors %}{{ form.website.value }} {% else %} {{ profile.website }} {% endif %}"
                     />
                 </div>
 
