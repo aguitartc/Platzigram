@@ -18,7 +18,7 @@ from users.forms import ProfileForm
 def update_profile(request): 
     """Update a user's profile view."""
     profile = request.user.profile
-    echo(message='holaaaaaaa')
+    
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -44,10 +44,6 @@ def update_profile(request):
         }
     )
     
-            
-
-    
-
 def login_view(request): 
     """login view"""
     if request.method == 'POST':
