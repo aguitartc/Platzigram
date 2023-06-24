@@ -17,24 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from django.urls import path
+from django.urls import path, include
 from Platzigram import views
-from posts import views as posts_views
-from users import views as users_views
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello-world/', views.hello_world, name='hello_world'),	
-    path('merda/', views.hello_world, name='merda'),
-    path('hi/', views.order_numbers, name='order_numbers'),
-    path('oficial',views.order_numbers_solucion_oficial),		
-    path('urlparams/<str:name>/<int:age>/',views.say_hi, name='hi'),		
-    path('', posts_views.list_posts, name='feed'),
-    path('posts/new/', posts_views.create_post, name='create_post'),
-    path('users/logout/', users_views.logout_view, name='logout'),
-    path('users/login/', users_views.login_view, name='login'),
-    path('users/me/profile/', users_views.update_profile, name='update_profile'),
-    path('users/signup/', users_views.signup, name='signup'),
+    
+    path('', include(('posts.urls','posts'),namespace='posts')),
+
+    path('', include(('users.urls','users'),namespace='users'))
+        
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
