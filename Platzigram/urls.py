@@ -31,9 +31,10 @@ urlpatterns = [
     path('hi/', views.order_numbers, name='order_numbers'),
     path('oficial',views.order_numbers_solucion_oficial),		
     path('urlparams/<str:name>/<int:age>/',views.say_hi, name='hi'),		
-    path('posts/', posts_views.list_posts, name='feed'),
-    path('users/login/', users_views.login_view, name='login'),
+    path('', posts_views.list_posts, name='feed'),
+    path('posts/new/', posts_views.create_post, name='create_post'),
     path('users/logout/', users_views.logout_view, name='logout'),
+    path('users/login/', users_views.login_view, name='login'),
     path('users/me/profile/', users_views.update_profile, name='update_profile'),
     path('users/signup/', users_views.signup, name='signup'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

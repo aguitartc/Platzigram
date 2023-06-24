@@ -14,9 +14,6 @@
 
             <form action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-
-                
-
                 <div class="media">
                     {% if profile.picture %}
                         <img src="{{ profile.picture.url }}" class="rounded-circle" height="50" />
@@ -26,28 +23,43 @@
 
                     <div class="media-body">
                         <h5 class="ml-4">@{{ user.username }} | {{ user.get_full_name }}</h5>
-                        <p class="ml-4"><input type="file" name="picture" required="true"></p>
+                        <p class="ml-4"><input type="file" name="picture"></p>
                     </div>
                 </div>
 
                 {% for error in form.picture.errors %}
-                error {% endfor %}
+                <div class="alert alert-danger">
+                    <b>Picture: </b>{{ error }}
+                </div>
+                {% endfor %}
+
                 <hr><br>
+                
+                
                 {# Website field #}
                 <div class="form-group">
                     <label>Website</label>
                     <input
                         class="form-control {% if form.website.errors %}is-invalid{% endif %}"
-                        type="url"
+                        type="text"
                         name="website"
                         placeholder="Website"
                         value="{% if  form.errors %}{{ form.website.value }} {% else %} {{ profile.website }} {% endif %}"
                     />
+                    <div class="invalid-feedback">
+                        {% for error in form.website.errors%} {% endfor %}
+                    </div>
+
+                </div class="invalid-feedback">
+                    {% for error in form.website.errors %}
+                        {{ error }}
+                    {% endfor %}
+                <div>
                 </div>
 
                 <div class="form-group">
                     <label>Biography</label>
-                    <textarea class="form-control" name="biography">{{ profile.biography }}</textarea>
+                    <textarea class="form-control {% if form.errors %}{{ form.website.value }}{% else %}{{profile.website}}{% endif %}" name="biography">{{ profile.biography }}</textarea>
                 </div>
 
                 <div class="form-group">
