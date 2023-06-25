@@ -8,9 +8,9 @@ from users import views
 urlpatterns = [
     #Posts
     path(
-        route = 'profile/<str:username>/',
-        view=TemplateView.as_view(template_name='users/detail.html'),
-        name='login'
+        route = '<str:username>/',
+        view=views.UserDetailView.as_view(),
+        name='detail'
     ),
     #Management
     path(
@@ -26,14 +26,16 @@ urlpatterns = [
     ),
     
     path(
+        route='signup/',
+        view=views.signup,
+        name='signup'
+    ),
+    
+    path(
         route='me/profile/',
         view=views.update_profile,
         name='update_profile'
     ),
 
-    path(
-        route='signup/',
-        view=views.signup,
-        name='signup'
-    ),
+    
 ]
