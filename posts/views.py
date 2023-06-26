@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView
 
 # Forms
 from posts.forms import PostForm
@@ -10,36 +12,21 @@ from posts.models import Post
 # Create your views here.
 from django.http import HttpResponse
 
+class PostDetailView(LoginRequiredMixin, DetailView):
+    """Return post detail."""
 
+    template_name = 'posts/detail.html'
+    queryset = Post.objects.all()
+    context_object_name = 'post'
 
-# 1 Retornant pàgina sense html
-#def list_posts(request):
-#    """List existing posts."""
-#    posts = [1,2,3]
-#    return(HttpResponse(str(posts)))
+class PostFeedView(LoginRequiredMixin, ListView):
+    """Return all published posts."""
 
-# 2 Sofisticant una mica més
-#def list_posts(request):
-#    """List existing posts."""
-#    content = []
-#    for post in posts:
-#        content.append("""
-#        <p><strong>{name}</strong></p>
-#        <p><small>{user}</small></p>
-#        <p><small>{timestamp}</small></p>
-#        """.format(**post))
-#    return(HttpResponse('<br>'.join(content)))
-
-# 3 template
-# def list_posts(request):
-#     return(render(request, 'feed.html',{'name':'ana'}))
-
-# 4 posts
-@login_required
-def list_posts(request):
-    """List existing posts."""
-    posts = Post.objects.all().order_by('-created')
-    return(render(request, 'posts/feed.html',{'posts':posts}))
+    template_name = 'posts/feed.html'
+    model = Post
+    ordering = ('-created',)
+    pagine_by = 2
+    context_object_name = 'posts'
 
 @login_required
 def create_post(request):

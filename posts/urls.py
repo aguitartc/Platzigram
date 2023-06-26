@@ -9,7 +9,7 @@ from posts import views
 urlpatterns = [
     path(
         route='',
-        view=views.list_posts,
+        view=views.PostFeedView.as_view(),
         name='feed'
 
     ),
@@ -19,4 +19,10 @@ urlpatterns = [
         view=views.create_post,
         name='create'
     ),
+
+    path(
+        route='posts/<int:pk>/',
+        view=views.PostDetailView.as_view(),
+        name='detail'
+    )
 ]
